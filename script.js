@@ -6,7 +6,7 @@ let isNumber1=true;
 let refresh=false;
 $(document).ready(function () {
     $('button').on('click', function (e) {
-        let btn = e.target.innerHTML;
+        let character = $(this).text();
         if(refresh){
             $("#display").animate({
                 height: "50%"
@@ -18,18 +18,18 @@ $(document).ready(function () {
               $('#result').text('');
             doRefresh=false;
         }
-        if (btn >= '0' && btn <= '9') {
-            handleNumber(btn);
-            $('#display').append(btn);
-        } else if(btn==='='){
-            handleTotal();
+        if (character >= '0' && character <= '9') {
+            setNumber(character);
+            $('#display').append(character);
+        } else if(character==='='){
+            calculateTotal();
             displayResult();
-        }else if(btn=='CE'){
+        }else if(character=='CE'){
             setInitialState();
-            displayButton('');            
+            setDisplay('');            
         }else {
-            handleOperator(btn);
-            $('#display').append(btn);
+            setOperator(character);
+            $('#display').append(character);
         }
     });
 });
@@ -45,7 +45,7 @@ function displayResult(){
       setInitialState();
       refresh=true;
 }
-function handleNumber(num) {
+function setNumber(num) {
     if (isNumber1) {
         number1 =number1+ num;
     }
@@ -53,18 +53,18 @@ function handleNumber(num) {
         number2 = number2+num;
     }
 }
-function handleOperator(oper) {
+function setOperator(oper) {
     isNumber1=false;
     if (operator === '') {
 
         operator = oper;
     }
     else {
-        handleTotal();
+        calculateTotal();
         operator = oper;
     }
 }
-function handleTotal() {
+function calculateTotal() {
     switch (operator) {
         case '+': total = +number1 + +number2;
             break;
@@ -72,13 +72,13 @@ function handleTotal() {
             break;
         case '/': total = +number1 / +number2;
             break;
-        case 'X': total = +number1 * +number2;
+        case 'x': total = +number1 * +number2;
             break;
     }
     $('#result').text(total);
     updateVariables();
 }
-function displayButton(value) {
+function setDisplay(value) {
     $('#display').text(value);
 }
 function updateVariables() {
@@ -91,5 +91,5 @@ function setInitialState(){
     isNumber1=true;
     total='';
     operator='';
-    displayButton('');
+    setDisplay('');
 }
